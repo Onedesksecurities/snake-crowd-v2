@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Snake Pad</title>
+<style>
+body{margin:0;background:#111;height:100vh;display:flex;align-items:center;justify-content:center}
+.btn{width:120px;height:120px;margin:10px;font-size:40px;border:none;border-radius:16px;background:#2d5a27;color:#fff;
+box-shadow:0 0 15px #0008;touch-action:manipulation}
+.grid{display:grid;grid-template-columns:repeat(3,120px);grid-template-rows:repeat(3,120px)}
+.grid>*{display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<div class="grid">
+  <span></span><button id="up"    class="btn">⬆️</button><span></span>
+  <button id="left"  class="btn">⬅️</button><span></span><button id="right" class="btn">➡️</button>
+  <span></span><button id="down"  class="btn">⬇️</button><span></span>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+const sock=io({transports:['websocket']});
+const map={up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight'};
+Object.entries(map).forEach(([id,key])=>{
+  const b=document.getElementById(id);
+  ['touchstart','mousedown'].forEach(ev=>
+    b.addEventListener(ev,e=>{e.preventDefault();sock.emit('cmd',key);}));
+});
+</script></body></html>
